@@ -19,7 +19,7 @@ public final JdbcTemplate jdbcTemplate;
 
     @Override
     public int addHistory(HistoryDto dto) {
-        return jdbcTemplate.update("insert into history(userId,createdAt,action,object,\"objectName\" values (?,?,?,?,?)",
+        return jdbcTemplate.update("insert into history(user_id,created_at,action,object,\"objectName\" values (?,?,?,?,?)",
                 dto.getUserId(),dto.getCreatedAt(),dto.getObject(),dto.getObjectName());
     }
 

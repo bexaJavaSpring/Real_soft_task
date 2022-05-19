@@ -2,8 +2,10 @@ package com.example.real_soft_task.controller;
 
 import com.example.real_soft_task.dto.CategoryDto;
 import com.example.real_soft_task.dto.ContactDto;
+import com.example.real_soft_task.dto.HistoryDto;
 import com.example.real_soft_task.model.Category;
 import com.example.real_soft_task.repository_service.CategoryService;
+import com.example.real_soft_task.repository_service.HistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-
+    private final HistoryService historyService;
     @GetMapping("/crud")
     public String allCategory(Model model) {
         List<Category> all = categoryService.findAll();
@@ -40,8 +42,22 @@ public class CategoryController {
 
     @PostMapping("/add")
     public String addCategory(@ModelAttribute CategoryDto dto, Model model) {
-        categoryService.addCategory(dto);
-        model.addAttribute("message", "Added");
+        String message="";
+        int save = categoryService.addCategory(dto);
+        if (save == 1) {
+            // auditing :
+            HistoryDto historyDto = new HistoryDto();
+            historyDto.setUserId(historyDto.getUserId());
+            historyDto.setAction("Add to category");
+            historyDto.setObject("Category");
+            historyDto.setObjectName(dto.getName());
+            historyService.addHistory(historyDto);
+
+            message = "success";
+        } else {
+            message = "failed";
+        }
+        model.addAttribute("message",message );
         List<Category> all = categoryService.findAll();
         model.addAttribute("categoryList", all);
         return "category";
@@ -56,15 +72,44 @@ public class CategoryController {
 
     @PostMapping("/edit/{id}")
     public String saveEditCategory( @ModelAttribute CategoryDto dto,@PathVariable Integer id, Model model) {
-        categoryService.updateCategory(dto,id);
-        model.addAttribute("message", "Edited");
+        String message="";
+        int save = categoryService.updateCategory(dto, id);
+        if (save == 1) {
+            HistoryDto historyDto = new HistoryDto();
+            historyDto.setUserId(historyDto.getUserId());
+            historyDto.setAction("editing category");
+            historyDto.setObject("Category");
+            historyDto.setObjectName(dto.getName());
+            historyService.updateHistory(historyDto,id);
+            message = "success";
+        } else {
+            message = "fail";
+        }
+
+        model.addAttribute("message", message);
         model.addAttribute("categoryList", categoryService.findAll());
         return "category";
     }
     @GetMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Integer id,Model model){
-       categoryService.deleteCategory(id);
-       model.addAttribute("message","Deleted");
+        String message="";
+        int save = categoryService.deleteCategory(id);
+        if (save == 1) {
+            Category category = categoryService.findById(id);
+
+            HistoryDto dto = new HistoryDto();
+            dto.setUserId(dto.getUserId());
+            dto.setAction("delete category");
+            dto.setObject("Category");
+            dto.setObjectName(category.getName());
+            historyService.delete(id);
+
+            message = "success";
+
+        } else {
+            message = "failed";
+        }
+        model.addAttribute("message",message);
        model.addAttribute("categoryList",categoryService.findAll());
        return "category";
     }

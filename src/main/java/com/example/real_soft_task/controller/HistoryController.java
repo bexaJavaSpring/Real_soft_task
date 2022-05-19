@@ -67,7 +67,7 @@ public class HistoryController {
                 table.addCell(history.getId() + "");
                 table.addCell(history.getUser_id() + "");
                 table.addCell(history.getCreated_at() + "");
-                table.addCell(history.getAction() + "");
+                table.addCell(history.getUser_id() + "");
                 table.addCell(history.getObject() + "");
                 table.addCell(history.getObject_name() + "");
             }
