@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <style>
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<h1>Contact Window</h1>
+<body>
+<a class="btn-danger" href="/users/first">Home</a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table">
+                <div class="alert alert-primary" th:text="${message}">
+                </div>
+                <tr class="table-dark">
+                    <th>Id</th>
+                    <th>Owner_name</th>
+                    <th>Number</th>
+                    <th>Status</th>
+                    <th>CategoryId</th>
+                    <th>Active</th>
+                    <th>Operation</th>
+                </tr>
+                <tr th:each="con:${contactList}">
+                    <td th:text="${con.getId()}"></td>
+                    <td th:text="${con.getName()}"></td>
+                    <td th:text="${con.getNumber()}"></td>
+                    <td th:text="${con.getStatus()}"></td>
+                    <td th:text="${con.getCategory_id()}"></td>
+                    <td th:text="${con.isActive()}"></td>
+                    <td>
+                        <a th:href="'/contact/edit/'+${con.id}" class="btn btn-primary">Edit</a>
+                        <a th:href="'/contact/delete/'+${con.id}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-4 text-center mt-5">
+            <form th:action="@{/contact/add}" method="post">
+                <label>Enter owner_name</label>
+                <input class="form-control" type="text" name="name" required minlength="1">
+                <label>Enter Number</label>
+                <input class="form-control" type="text" name="number" required minlength="1">
+                <label>Enter Status</label>
+                <input class="form-control" type="text" name="status" required minlength="1">
+                <div class="form-group">
+                    <label for="category">Select Category</label>
+                    <select class="form-control selectpicker" name="categoryId" id="category">
+                        <option value="">Category selected</option>
+                        <option th:each="cat : ${categoryList}"
+                                th:value="${cat.id}"
+                                th:text="${cat.name}">
+                        </option>
+                    </select>
+                </div>
+                <br>
+                <input class="form-control" type="checkbox" name="active" required minlength="1">
+                <br>
+                <input type="submit" class="btn btn-primary w-100">
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

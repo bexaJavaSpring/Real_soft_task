@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Contact Edit</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+</head>
+<body>
+<br>
+<br>
+<div class = "container">
+    <div class = "row">
+        <div class ="text-center left-pill mt-5">
+            <h1 class = "text-white"> Edit Contact </h1>
+            <form th:action="@{/contact/edit/{id}(id=${contact.id})}" th:object = "${contact}" method="POST">
+                <div class ="form-group">
+                    <label> contact New owner_name </label>
+                    <br><br>
+                    <input
+                            type = "text"
+                            name = "name"
+                            th:field = "*{name}"
+                            class = "form-control"
+                            placeholder="Enter owner_name"
+                    />
+                </div>
+                <br>
+                <div class ="form-group">
+                    <label> contact New number </label>
+                    <br><br>
+                    <input
+                            type = "text"
+                            name = "number"
+                            th:field = "*{number}"
+                            class = "form-control"
+                            placeholder="Enter number"
+                    />
+                </div>
+                <br>
+                <div class ="form-group">
+                    <label> contact New status </label>
+                    <br><br>
+                    <input
+                            type = "text"
+                            name = "status"
+                            th:field = "*{status}"
+                            class = "form-control"
+                            placeholder="Enter status"
+                    />
+                </div>
+                <br>
+                <div class="col-sm-5">
+                    <label>Active:</label>
+                    <input  class="form-check-input m-2 h5" th:field="*{active}" type="checkbox" name="active"/>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="category">Select Category</label>
+                    <select class="form-control" name="categoryId" id="category">
+                        <option value="">Category selected</option>
+                        <option th:each="cat : ${categoryList}"
+                                th:value="${cat.id}"
+                                th:text="${cat.name}"
+                                th:selected="${contact.category_id}">
+                        </option>
+                    </select>
+                </div>
+                <div class = "box-footer">
+                    <button type="submit" class = "btn btn-primary w-100">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

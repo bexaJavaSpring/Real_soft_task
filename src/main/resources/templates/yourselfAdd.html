@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<a class="btn-danger" href="/users/second">Home</a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 text-center mt-5">
+            <form th:action="@{/contact/addcon}" method="post">
+                <label>Enter owner_name</label>
+                <input class="form-control" type="text" name="name" required minlength="1">
+                <label>Enter Number</label>
+                <input class="form-control" type="text" name="number" required minlength="1">
+                <label>Enter Status</label>
+                <input class="form-control" type="text" name="status" required minlength="1">
+                <div class="form-group">
+                    <label for="category">Select Category</label>
+                    <select class="form-control selectpicker" name="categoryId" id="category">
+                        <option value="">Category selected</option>
+                        <option th:each="cat : ${categoryList}"
+                                th:value="${cat.id}"
+                                th:text="${cat.name}">
+                        </option>
+                    </select>
+                </div>
+                <br>
+                <input class="form-control" type="checkbox" name="active" required minlength="1">
+                <br>
+                <input type="submit" class="btn btn-primary w-100">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

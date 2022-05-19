@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<a class="btn-danger" href="/users/second">Home</a>
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-8">
+            <table class="table">
+                <div class="alert alert-primary" th:text="${message}">
+                </div>
+                <tr class="table-dark">
+                    <th>Name</th>
+                </tr>
+                <tr th:each="con:${contactList}">
+                    <td th:text="${con.getId()}"></td>
+                    <td th:text="${con.getName()}"></td>
+                    <td th:text="${con.getNumber()}"></td>
+                    <td th:text="${con.getStatus()}"></td>
+                    <td th:text="${con.getCategory_id()}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
