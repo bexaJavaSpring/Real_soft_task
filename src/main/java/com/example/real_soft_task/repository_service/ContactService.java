@@ -41,6 +41,6 @@ public class ContactService implements ContactRepository {
 
     @Override
     public int deleteContact(Integer id) {
-        return jdbcTemplate.update("update \"Category\" set active = false where id = ?",id);
+        return jdbcTemplate.update("update \"Contact\" set active = false where id = ?",id);
     }
 }

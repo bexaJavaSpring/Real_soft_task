@@ -7,11 +7,17 @@ import com.example.real_soft_task.model.Category;
 import com.example.real_soft_task.repository_service.CategoryService;
 import com.example.real_soft_task.repository_service.HistoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/category")
@@ -19,6 +25,7 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
     private final HistoryService historyService;
+
     @GetMapping("/crud")
     public String allCategory(Model model) {
         List<Category> all = categoryService.findAll();
@@ -37,12 +44,12 @@ public class CategoryController {
     @GetMapping("/add")
     public String addPage(Model model) {
         model.addAttribute("categoryList", categoryService.findAll());
-      return "category";
+        return "category";
     }
 
     @PostMapping("/add")
     public String addCategory(@ModelAttribute CategoryDto dto, Model model) {
-        String message="";
+        String message = "";
         int save = categoryService.addCategory(dto);
         if (save == 1) {
             // auditing :
@@ -57,7 +64,7 @@ public class CategoryController {
         } else {
             message = "failed";
         }
-        model.addAttribute("message",message );
+        model.addAttribute("message", message);
         List<Category> all = categoryService.findAll();
         model.addAttribute("categoryList", all);
         return "category";
@@ -66,13 +73,13 @@ public class CategoryController {
     @GetMapping("/edit/{id}")
     public String editCategory(@PathVariable Integer id, Model model) {
         model.addAttribute("category", categoryService.findById(id));
-        model.addAttribute("categoryList",categoryService.findAll());
+        model.addAttribute("categoryList", categoryService.findAll());
         return "category_edit";
     }
 
     @PostMapping("/edit/{id}")
-    public String saveEditCategory( @ModelAttribute CategoryDto dto,@PathVariable Integer id, Model model) {
-        String message="";
+    public String saveEditCategory(@ModelAttribute CategoryDto dto, @PathVariable Integer id, Model model) {
+        String message = "";
         int save = categoryService.updateCategory(dto, id);
         if (save == 1) {
             HistoryDto historyDto = new HistoryDto();
@@ -80,7 +87,7 @@ public class CategoryController {
             historyDto.setAction("editing category");
             historyDto.setObject("Category");
             historyDto.setObjectName(dto.getName());
-            historyService.updateHistory(historyDto,id);
+            historyService.updateHistory(historyDto, id);
             message = "success";
         } else {
             message = "fail";
@@ -90,9 +97,10 @@ public class CategoryController {
         model.addAttribute("categoryList", categoryService.findAll());
         return "category";
     }
+
     @GetMapping("/delete/{id}")
-    public String deleteCategory(@PathVariable Integer id,Model model){
-        String message="";
+    public String deleteCategory(@PathVariable Integer id, Model model) {
+        String message = "";
         int save = categoryService.deleteCategory(id);
         if (save == 1) {
             Category category = categoryService.findById(id);
@@ -109,19 +117,22 @@ public class CategoryController {
         } else {
             message = "failed";
         }
-        model.addAttribute("message",message);
-       model.addAttribute("categoryList",categoryService.findAll());
-       return "category";
+        model.addAttribute("message", message);
+        model.addAttribute("categoryList", categoryService.findAll());
+        return "category";
     }
+
     @GetMapping("/show")
-    public String categoryList(Model model){
+    public String categoryList(Model model) {
         List<Category> all = categoryService.findAll();
-        model.addAttribute("message","All category");
-        model.addAttribute("categoryList",all);
+        model.addAttribute("message", "All category");
+        model.addAttribute("categoryList", all);
         return "category-show";
     }
 
-
-
-
 }
+
+
+
+
+

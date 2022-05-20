@@ -128,16 +128,13 @@ public class ContactController {
         int save = contactService.deleteContact(id);
         if (save == 1) {
             Category category = categoryService.findById(id);
-
             HistoryDto dto = new HistoryDto();
             dto.setUserId(dto.getUserId());
             dto.setAction("delete category");
             dto.setObject("Category");
             dto.setObjectName(category.getName());
             historyService.delete(id);
-
             message = "success";
-
         } else {
             message = "failed";
         }

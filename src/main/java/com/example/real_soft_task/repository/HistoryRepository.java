@@ -11,7 +11,6 @@ public interface HistoryRepository {
 
     int updateHistory(HistoryDto dto,Integer id);
 
-
     List<History> findAll();
 
     int delete(Integer id);
